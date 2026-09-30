@@ -27,3 +27,5 @@ dist-ssr
 .env
 .env.local
 codigos_nuevos_*.csv
+codigos_socios*.pdf
+codigos_socios_*.csv
