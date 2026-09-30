@@ -11,17 +11,20 @@ import { useMembers } from './hooks/useMembers.js'
 import { todayLocalISO, weekRangeLocalISO } from './dateUtils.js'
 import './AppLayout.css'
 
-const DAILY_HOUR_LIMIT = 1;
+// Cada sesión dura 1:30. El límite diario es una sesión completa.
+const SESSION_HOURS = 1.5;
+const DAILY_HOUR_LIMIT = SESSION_HOURS;
 
-// Horas que "gasta" un socio en una reserva: 1h si juega solo, 0.5h si va
-// acompañado (sea titular o acompañante). Debe coincidir con el criterio de
-// la RPC `_member_daily_hours` en supabase/migrations/004_daily_hour_limit.sql.
+// Horas que "gasta" un socio en una reserva: la sesión completa (1:30) si
+// juega solo, la mitad (0:45) si va acompañado (sea titular o acompañante).
+// Debe coincidir con el criterio de la RPC `_member_daily_hours` en
+// supabase/migrations/009_session_90_minutes.sql.
 function memberHoursInReservation(reservation, memberId) {
     const isOwner = String(reservation.member_id) === String(memberId);
     const isCompanion = String(reservation.companion_member_id) === String(memberId);
     if (!isOwner && !isCompanion) return 0;
-    if (isOwner) return reservation.is_solo ? 1 : 0.5;
-    return 0.5;
+    if (isOwner) return reservation.is_solo ? SESSION_HOURS : SESSION_HOURS / 2;
+    return SESSION_HOURS / 2;
 }
 
 function sumMemberHours(reservations, memberId, dateFrom, dateTo) {
@@ -445,7 +448,11 @@ const NO_LIMIT_SCALE = 7;
 function HourConsumptionBar({ label, hours, limit }) {
     const hasLimit = limit != null;
     const percent = Math.min(100, (hours / (hasLimit ? limit : NO_LIMIT_SCALE)) * 100);
-    const formatHours = (h) => (h % 1 === 0 ? h : h.toFixed(1)).toString().replace('.', ',');
+    // Formato h:mm (p. ej. 0:45, 1:30).
+    const formatHours = (h) => {
+        const totalMinutes = Math.round(h * 60);
+        return `${Math.floor(totalMinutes / 60)}:${String(totalMinutes % 60).padStart(2, '0')}`;
+    };
 
     return (
         <div className="hour-bar">

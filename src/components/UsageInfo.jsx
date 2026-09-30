@@ -3,7 +3,7 @@ import './UsageInfo.css';
 const RULES = [
     {
         title: 'Límite diario',
-        text: 'Máximo 1 hora de juego al día por socio.',
+        text: 'Cada sesión dura 1 h 30 min. Máximo una sesión (1:30) de juego al día por socio.',
     },
     {
         title: 'Una franja por semana',

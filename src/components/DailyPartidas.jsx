@@ -156,8 +156,8 @@ export const DailyPartidas = ({ reservations, onJoinReservation, memberName, mem
                             <p><strong>Tu nombre:</strong> {memberName}</p>
                         </div>
                         <p className="dialog-note">
-                            Al unirte, la partida pasa a contar 30 min para cada uno: a ti se te
-                            suman 0:30 y a {selectedReservation.customer_name} se le descuenta media hora.
+                            Al unirte, la partida pasa a contar 45 min para cada uno: a ti se te
+                            suman 0:45 y a {selectedReservation.customer_name} se le descuentan 45 min.
                         </p>
                         <div className="dialog-actions">
                             <button className="btn-cancel" onClick={cancelJoin}>Cancelar</button>

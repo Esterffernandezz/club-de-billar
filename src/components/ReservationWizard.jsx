@@ -130,7 +130,7 @@ export function ReservationWizard({ isOpen, onClose, onSubmit, tableData, checkA
 
                                     <label>Horarios disponibles</label>
                                     <div className="time-slots-grid">
-                                        {['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'].map(slot => {
+                                        {['09:00', '10:30', '12:00', '13:30', '15:00', '16:30', '18:00', '19:30'].map(slot => {
                                             const isTaken = checkAvailability(tableData.id, date, slot);
 
                                             // Find if this slot is a solo reservation
@@ -147,9 +147,10 @@ export function ReservationWizard({ isOpen, onClose, onSubmit, tableData, checkA
                                             // Check if time has already passed for today
                                             const now = new Date();
                                             const today = todayLocalISO();
-                                            const currentHour = now.getHours();
-                                            const slotHour = parseInt(slot.split(':')[0]);
-                                            const isPast = date === today && slotHour < currentHour;
+                                            // Cada sesión dura 90 min: se puede reservar hasta que termina.
+                                            const nowMinutes = now.getHours() * 60 + now.getMinutes();
+                                            const [slotH, slotM] = slot.split(':').map(Number);
+                                            const isPast = date === today && slotH * 60 + slotM + 90 <= nowMinutes;
 
                                             const isDisabled = (isTaken && !soloReservation) || isPast;
 
@@ -231,8 +232,8 @@ export function ReservationWizard({ isOpen, onClose, onSubmit, tableData, checkA
                                         </div>
                                         <p className="allow-join-hint">
                                             {allowJoin
-                                                ? 'Si alguien se une, la partida pasa a contarte 30 min en vez de 1 hora.'
-                                                : 'Nadie podrá unirse. La partida te cuenta 1 hora completa.'}
+                                                ? 'Si alguien se une, la partida pasa a contarte 45 min en vez de 1:30.'
+                                                : 'Nadie podrá unirse. La partida te cuenta 1:30 completa.'}
                                         </p>
                                     </div>
                                 )}
@@ -361,7 +362,7 @@ export function ReservationWizard({ isOpen, onClose, onSubmit, tableData, checkA
                                 </div>
                                 <div>
                                     <strong>{tableData.name}</strong>
-                                    <div className="text-sm">1 hora</div>
+                                    <div className="text-sm">1 h 30 min</div>
                                     {date && time && <div className="text-sm highlight">{formatDate(date)} a las {time}</div>}
                                     {gameMode && <div className="text-sm">{GAME_MODES.find(m => m.value === gameMode)?.label}</div>}
                                     {category && <div className="text-sm">Categoría: {CATEGORIES.find(c => c.value === category)?.label}</div>}
