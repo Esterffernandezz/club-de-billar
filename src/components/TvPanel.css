@@ -1,0 +1,197 @@
+/* Panel para televisión (?panel): siempre oscuro, letra grande y sin scroll.
+   Este CSS va en el mismo bundle que la app, así que todo queda bajo
+   .tv-panel y no toca estilos globales. */
+
+.tv-panel {
+    --bg: #0B100C;
+    --surface: #151C16;
+    --surface-2: #1D261E;
+    --text: #F3F1E6;
+    --muted: #8D978C;
+    --gold: #F0C14B;
+    --live: #4ADE80;
+
+    box-sizing: border-box;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    padding: 2.5vh 2.5vw;
+    background: radial-gradient(ellipse at top, #13241A 0%, var(--bg) 60%);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    cursor: none;
+}
+
+.tv-panel *, .tv-panel *::before, .tv-panel *::after { box-sizing: border-box; }
+
+.tv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tv-brand {
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+}
+
+.tv-logo {
+    width: 8vh;
+    height: 8vh;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+}
+
+.tv-header h1 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 4.2vh;
+    color: var(--gold);
+}
+
+.tv-date {
+    margin: 0.4vh 0 0;
+    font-size: 2.6vh;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.tv-date span { color: var(--text); }
+
+.tv-clock {
+    font-size: 7vh;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+}
+
+.tv-error {
+    background: #5B1A16;
+    color: #FFD9D4;
+    padding: 1vh 1.5vw;
+    border-radius: 10px;
+    font-size: 2.2vh;
+    font-weight: 600;
+}
+
+.tv-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 12vw repeat(var(--tables), 1fr);
+    grid-template-rows: auto;
+    grid-auto-rows: 1fr;
+    gap: 1vh 0.8vw;
+    min-height: 0;
+}
+
+.tv-table-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.2vh 0.5vw;
+    border-radius: 12px;
+    background: var(--surface);
+    border-top: 0.7vh solid var(--table-color);
+}
+
+.tv-table-number { font-size: 3.2vh; font-weight: 800; }
+.tv-table-name { font-size: 2.2vh; color: var(--muted); font-weight: 600; }
+
+.tv-slot {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 0.5vw;
+}
+
+.tv-slot-time {
+    font-size: 4vh;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.tv-slot-end { font-size: 2vh; color: var(--muted); }
+
+.tv-live-badge {
+    align-self: flex-start;
+    margin-top: 0.5vh;
+    padding: 0.3vh 0.6vw;
+    border-radius: 999px;
+    background: var(--live);
+    color: #062611;
+    font-size: 1.7vh;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    animation: tv-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tv-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+}
+
+.tv-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3vh;
+    padding: 0.8vh 0.6vw;
+    border-radius: 12px;
+    text-align: center;
+    background: var(--surface);
+    border: 2px solid transparent;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.tv-cell.booked {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--table-color) 22%, var(--surface-2)), var(--surface-2));
+    border-color: color-mix(in srgb, var(--table-color) 55%, transparent);
+}
+
+.tv-player {
+    font-size: 3.1vh;
+    font-weight: 700;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.tv-player.companion::before { content: '+ '; color: var(--muted); }
+
+.tv-mode {
+    font-size: 1.9vh;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tv-free {
+    font-size: 2.4vh;
+    color: var(--muted);
+    font-weight: 600;
+    opacity: 0.6;
+}
+
+/* Turno en curso */
+.tv-cell.live { border-color: var(--live); box-shadow: 0 0 2.5vh rgba(74, 222, 128, 0.25); }
+.tv-slot.live .tv-slot-time { color: var(--live); }
+
+/* Turnos ya terminados */
+.tv-cell.past, .tv-slot.past { opacity: 0.32; }
+
+.tv-footer {
+    text-align: right;
+    font-size: 1.6vh;
+    color: var(--muted);
+}
