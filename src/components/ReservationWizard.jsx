@@ -138,7 +138,7 @@ export function ReservationWizard({ isOpen, onClose, onSubmit, tableData, checkA
 
                                     <label>Horarios disponibles</label>
                                     <div className="time-slots-grid">
-                                        {['09:00', '10:30', '12:00', '16:00', '17:30', '19:00'].map(slot => {
+                                        {['09:10', '10:50', '12:30', '16:10', '17:50', '19:30'].map(slot => {
                                             const isTaken = checkAvailability(tableData.id, date, slot);
 
                                             // Find if this slot is a solo reservation

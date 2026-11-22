@@ -3,7 +3,7 @@ import './UsageInfo.css';
 const RULES = [
     {
         title: 'Horario',
-        text: 'Mañanas de 9:00 a 13:30 y tardes de 16:00 a 20:30. Las reservas para el día siguiente se pueden hacer hasta las 21:00; para los demás días se puede reservar a cualquier hora.',
+        text: 'Mañanas: 9:10–10:40, 10:50–12:20 y 12:30–14:00. Tardes: 16:10–17:40, 17:50–19:20 y 19:30–21:00. Entre partida y partida hay 10 minutos para limpiar las mesas. Las reservas para el día siguiente se pueden hacer hasta las 21:00; para los demás días se puede reservar a cualquier hora.',
     },
     {
         title: 'Límite diario',

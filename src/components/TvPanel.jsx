@@ -9,10 +9,10 @@ const TABLES = [
     { id: 3, name: 'Bailen', color: '#22C55E' },
     { id: 4, name: 'Escuela', color: '#EAB308' },
 ];
-const SLOTS = ['09:00', '10:30', '12:00', '16:00', '17:30', '19:00'];
+const SLOTS = ['09:10', '10:50', '12:30', '16:10', '17:50', '19:30'];
 const SESSION_MINUTES = 90;
-// Tras el último turno (19:00–20:30) el panel pasa a mostrar el día siguiente.
-const LAST_SLOT_END = 20 * 60 + 30;
+// Tras el último turno (19:30–21:00) el panel pasa a mostrar el día siguiente.
+const LAST_SLOT_END = 21 * 60;
 const REFRESH_MS = 60 * 1000;
 
 const GAME_MODE_LABELS = {
