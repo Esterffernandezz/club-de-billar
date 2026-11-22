@@ -13,7 +13,7 @@ const SLOTS = ['09:00', '10:30', '12:00', '16:00', '17:30', '19:00'];
 const SESSION_MINUTES = 90;
 // Tras el último turno (19:00–20:30) el panel pasa a mostrar el día siguiente.
 const LAST_SLOT_END = 20 * 60 + 30;
-const REFRESH_MS = 30 * 1000;
+const REFRESH_MS = 60 * 1000;
 
 const GAME_MODE_LABELS = {
     tres_bandas: 'Tres bandas',
@@ -72,8 +72,22 @@ export const TvPanel = () => {
             setLastUpdate(new Date());
         };
         load();
+
+        // Tiempo real: cualquier alta, baja o cambio en reservas recarga el
+        // panel al instante. Requiere la tabla en la publicación
+        // supabase_realtime (migración 013). El sondeo periódico se mantiene
+        // como respaldo por si la conexión en tiempo real se cae.
+        const channel = supabase
+            .channel('tv-panel-reservations')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'reservations' }, load)
+            .subscribe();
+
         const id = setInterval(load, REFRESH_MS);
-        return () => { cancelled = true; clearInterval(id); };
+        return () => {
+            cancelled = true;
+            clearInterval(id);
+            supabase.removeChannel(channel);
+        };
     }, [shownISO]);
 
     // Si la TV lleva días encendida, recarga la página de madrugada para
